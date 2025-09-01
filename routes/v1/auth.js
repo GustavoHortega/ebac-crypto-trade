@@ -8,7 +8,7 @@ router.post('/', async(req, res) => {
     try {
         const { email, senha } = req.body;
 
-        const jwt = await logaUsuario(email, senha);
+        const jwt = await logaUsuario(email, senha); //recebe o jwb gerado pela função
 
         res.status(200).json({
             sucesso: true,

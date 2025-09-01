@@ -1,18 +1,18 @@
 const passport = require('passport');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
+const JwtStrategy = require('passport-jwt').Strategy; //Estratégia de auth via Jason Web Token.
+const ExtractJwt = require('passport-jwt').ExtractJwt; //Esse é um utilitátio qua sabe onde buscar o token na requisição(Nesse caso no header);
 
 const { Usuario } = require('../../../models');
 
 passport.use(new JwtStrategy({
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //Extrai o token JWT do cabeçalho da requisição
         secretOrKey: process.env.JWT_SECRET_KEY
-    }, async (jwtPayload, done) => {
+    }, async (jwtPayload, done) => { //Função de verificação.
         try {
             const usuario = await Usuario.findById(jwtPayload.id);
-            done(null, usuario);
+            done(null, usuario); //se usuário encontrato
             
-        } catch (error) {
+        } catch (error) { //se usuário não encontrado
             done(error)
         }
     }

@@ -14,7 +14,7 @@ const criaUsuario = async (usuario) => {
 
     usuario.senha = hashSenha;
 
-    const { seunha, ...usuarioSalvo } = (await Usuario.create(usuario))._doc; // com essa sintaxe de destruturação eu garanto que a variaval do usuário não terá o campo da senha. O ._doc retorna um document.z
+    const { senha, ...usuarioSalvo } = (await Usuario.create(usuario))._doc; // com essa sintaxe de destruturação eu garanto que a variaval do usuário não terá o campo da senha. O ._doc retorna um document.z
 };
 
 module.exports = criaUsuario;

@@ -1,7 +1,7 @@
 const { Schema } = require('mongoose');
-const { cpf } = require('cpf-cnpj-validator');
+const { cpf } = require('cpf-cnpj-validator'); //biblioteca de validação de cpf.
 
-const SaqueSchema = new Schema ({
+const SaqueSchema = new Schema ({ //schema para saques
     valor: {
         type: Number,
         required: true,
@@ -14,7 +14,7 @@ const SaqueSchema = new Schema ({
     }
 });
 
-const DepositoSchema = new Schema({
+const DepositoSchema = new Schema({ //schema para depositos
     valor: {
         type: Number,
         required: true,
@@ -27,7 +27,7 @@ const DepositoSchema = new Schema({
     }
 });
 
-const UsuarioSchema = new Schema({
+const UsuarioSchema = new Schema({ //schema do usuário
     nome: {
         type: String,
         required: true,
@@ -37,11 +37,11 @@ const UsuarioSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        validate: {
+        validate: { //validação do cpf
             validator: function(v) {
                 return cpf.isValid(v);
             },
-        message: props => `${props.value} nao é um CPF valido`,
+        message: props => `${props.value} nao é um CPF valido`, //Essa mensagem é mostrada caso o validação falhe.
         
         },
     },
