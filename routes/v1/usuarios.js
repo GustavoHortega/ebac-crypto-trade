@@ -7,7 +7,7 @@ const logger = require('../../utils/logger');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    const dados = req.body.usuario;
+    const dados = req.body;
     
     try {
         const usuario = await criaUsuario(dados);
