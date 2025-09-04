@@ -10,6 +10,7 @@ const checaSaldo = async (usuario) => {
 
             }
         },
+        { $match: { "depositos.cancelado": { $ne: true } }},
         { $group: {
             _id: "$id",
             depositos: { $sum: "$depositos.valor"},
@@ -24,6 +25,7 @@ const checaSaldo = async (usuario) => {
 
             }
         },
+        { $match: { "depositos.cancelado": { $ne: true } }},
         { $group: {
             _id: "$id",
             saques: { $sum: "$saques.valor"},
