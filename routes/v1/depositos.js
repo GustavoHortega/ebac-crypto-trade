@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { checaSaldo } = require('../../services');
+const { checaSaldo, cancelaDeposito } = require('../../services');
 const { logger } = require('../../utils')
 
 const router = express.Router();
@@ -35,5 +35,27 @@ router.post('/', async(req, res) => {
         })
     }
 })
+
+router.delete('/:depositoId', async (req, res) => {
+    try{
+        const userId = req.user._id;
+        const { depositoId } = req.params;
+
+        const usuario = await cancelaDeposito(userId, depositoId);
+
+        res.json({
+            sucesso: true,
+            mensagem: 'Depósito cancelado com sucesso!',
+            saldo: await checaSaldo(usuario),
+            depositos: usuario.depositos
+        });
+    } catch (e) {
+        logger.error(`Erro ao cancelar deposito: ${e.message}`);
+        res.status(400).json({
+            sucesso: false,
+            erro: e.message5
+        });
+    }
+});
 
 module.exports = router;
