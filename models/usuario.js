@@ -24,6 +24,11 @@ const DepositoSchema = new Schema({ //schema para depositos
     data: {
         type: Date,
         required: true
+    },
+    cancelado: { //propriedade que indica se o deposito foi cancelado.
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 
