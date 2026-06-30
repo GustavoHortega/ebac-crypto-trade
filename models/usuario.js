@@ -1,6 +1,18 @@
 const { Schema } = require('mongoose');
 const { cpf } = require('cpf-cnpj-validator');
 
+const SaqueSchema = new Schema({ //Subdocumento de Saque aninhado no documento de Usuário
+    valor: {
+        type: Number,
+        required: true,
+        min: 1,
+    },
+    data: {
+        type: Date,
+        required: true,
+    },
+})
+
 const DepositoSchema = new Schema({ //Subdocumento de Depósito aninhado no documento de Usuário
     valor: {
         type: Number,
@@ -49,7 +61,8 @@ const UsuarioSchema = new Schema({//Documento de Usuário
         required: true,
         select: false, //Garante que em alguma listagem o campo senha não seja mostrado.
     },
-    depositos: [DepositoSchema]
+    depositos: [DepositoSchema],
+    saques: [SaqueSchema],
 
 });
 
