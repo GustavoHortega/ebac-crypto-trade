@@ -34,4 +34,27 @@ router.post('/', async (req, res) => { // Rota para criar um novo depósito para
     }
 });
 
+router.post('/cancelar', async (req, res) => { // Rota para cancelar o último depósito do usuário autenticado
+    const usuario = req.user;
+    try {
+        const deposito = await usuario.depositos[usuario.depositos.length - 1]; // Pega o último depósito do usuário
+        deposito.cancelado = true;
+        await usuario.save();
+
+        res.json({
+            sucesso: true,
+            mensagem: 'Depósito cancelado com sucesso',
+            deposito: deposito,
+        });
+
+    } catch (e) {
+        logger.error(`Erro ao cancelar depósito: ${e.message}`);
+
+        res.status(500).json({
+            sucesso: false,
+            mensagem: e.message,
+        });
+    }
+});
+
 module.exports = router;
