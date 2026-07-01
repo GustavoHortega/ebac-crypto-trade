@@ -1,6 +1,7 @@
 const { Usuario } = require('../models');
 
 const checaSaldo = async (usuario) => {
+    console.log(usuario);
     const operacoes = (await Usuario.aggregate([ // Aggregation pipeline (recebe uma lista de agragadores)
         { $match: { cpf: usuario.cpf } }, // Seleciona o usuário pelo CPF
         {
@@ -10,8 +11,13 @@ const checaSaldo = async (usuario) => {
             }
         },
         {
+            $match: {
+                "depositos.cancelado": { $ne: true } // Seleciona apenas os depósitos que não foram cancelados
+            }
+        },
+        {
             $group: { // Agruppa todos os documentos separados anteriormente através do id com a soma dos depósitos
-                _id: "$id",
+                _id: "$_id",
                 depositos: { $sum: "$depositos.valor" },
                 saques: { $last: "$saques" }
             }
@@ -24,13 +30,17 @@ const checaSaldo = async (usuario) => {
         },
         {
             $group: { // Agruppa todos os documentos separados anteriormente através do id com a soma dos saques
-                _id: "$id",
+                _id: "$_id",
                 saques: { $sum: "$saques.valor" },
                 depositos: { $last: "$depositos" }
             }
         },
     ]))[0];
-    
+
+    if (!operacoes) { // Garante que se não houver operações, o saldo seja 0
+        return 0;
+    }
+
     return operacoes.depositos - operacoes.saques; // Faz a diferença entre depósitos e saques.
 }
 
