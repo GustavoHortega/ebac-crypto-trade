@@ -5,10 +5,14 @@ const express = require('express');
 
 const { logger } = require('./utils');
 const { connect } = require('./models');
+const { agendaTarefas } = require('./workers');
 const router = require('./routes');
 const passport = require('passport');
 
 const app = express();
+
+// Inicializando o agendador de tarefas
+agendaTarefas();
 
 // config de autenticação
 app.use(passport.initialize());
