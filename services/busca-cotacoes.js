@@ -1,6 +1,8 @@
 const axios = require('axios');
 
-const buscaCotacoes = async (moedas) => {
+const { Cotacao } = require('../models');
+
+const buscaCotacoesOnline = async () => {
     const url = `${process.env.COINMARKET_API_URL}/v2/cryptocurrency/quotes/latest`;
 
     const { data } = await axios.get(url, {
@@ -24,4 +26,23 @@ const buscaCotacoes = async (moedas) => {
     }));
 };
 
-module.exports = buscaCotacoes;
+const buscaCotacoesNoBanco = async () => {
+    return await Cotacao.aggregate([
+        { "$sort": { data: -1 } },
+        {
+            "$group": {
+                "_id": { "moeda": "$moeda" },
+                "data": { $first: "$data" },
+                "moeda": { $first: "$moeda" },
+                "valor": { $first: "$valor" },
+                "id": { $first: "$_id" }
+            }
+        },
+        { "$unset": "_id" }
+    ]);
+};
+
+module.exports = {
+    buscaCotacoesOnline,
+    buscaCotacoesNoBanco
+};
