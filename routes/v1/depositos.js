@@ -1,6 +1,7 @@
 const express = require('express');
 
-const { logger } =  require('../../utils');
+const { logger } = require('../../utils');
+const { checaSaldo } = require('../../services');
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.post('/', async (req, res) => { // Rota para criar um novo depósito para
         res.json({
             sucesso: true,
             depositos: usuario.depositos,
+            saldo: await checaSaldo(req.user),
         });
     } catch (e) {
         logger.error(`Erro ao fazer depósito: ${e.message}`);

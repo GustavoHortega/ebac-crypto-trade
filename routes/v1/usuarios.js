@@ -1,13 +1,13 @@
 const express = require('express');
-const { logger } = require('../../utils')
 const passport = require('passport');
 
+const { logger } = require('../../utils');
 const { criaUsuario } = require('../../services');
-
+const { checaSaldo } = require('../../services');
 
 const router = express.Router();
 
-router.post('/', async(req, res) => {
+router.post('/', async (req, res) => {
     const dados = req.body.usuario;
 
     try {
@@ -27,10 +27,11 @@ router.post('/', async(req, res) => {
     }
 });
 
-router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/me', passport.authenticate('jwt', { session: false }), async (req, res) => {
     res.json({
         sucesso: true,
         usuario: req.user,
+        saldo: await checaSaldo(req.user),
     });
 });
 
