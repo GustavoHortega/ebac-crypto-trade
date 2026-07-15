@@ -1,13 +1,13 @@
 const express = require('express');
 
-const { buscaCotacoes } = require('../../services');
+const { buscaCotacoesNoBanco } = require('../../services');
 const { logger } = require('../../utils');
 
 const router = express.Router();
 
 router.get('/', async (_req, res) => { // Rota para buscar cotações de criptomoedas
     try {
-        const cotacoes = await buscaCotacoes();
+        const cotacoes = await buscaCotacoesNoBanco();
 
         res.json({
             sucesso: true,
