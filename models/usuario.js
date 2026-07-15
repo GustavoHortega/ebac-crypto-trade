@@ -22,6 +22,11 @@ const DepositoSchema = new Schema({ //Subdocumento de Depósito aninhado no docu
     data: {
         type: Date,
         required: true,
+    },
+    cancelado: {
+        type: Boolean,
+        required: true,
+        default: false,
     }
 
 });
