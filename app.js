@@ -6,14 +6,18 @@ const express = require('express');
 const { logger } = require('./utils');
 const { connect } = require('./models');
 const router = require('./routes');
+const passport = require('passport');
 
 const app = express();
+
+// config de autenticação
+app.use(passport.initialize());
 
 // configurando formatos de parâmetros
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// declarando rotas
+// rotas
 app.use('/', router);
 
 // caso nenhuma rota de match, redireciona para a 404
