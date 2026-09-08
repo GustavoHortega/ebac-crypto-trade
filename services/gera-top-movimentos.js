@@ -28,7 +28,12 @@ const geraTopMovimentos = async () => {
 
         const variacao = ((cotacaoHoje.valor - cotacaoOntem.valor) / cotacaoOntem.valor) * 100;
 
-        variacoes.push({ moeda, variacao: Number(variacao.toFixed(2)), valorAnterior: cotacaoOntem.valor, valorAtual: cotacaoHoje.valor, });
+        variacoes.push({ 
+            moeda, 
+            variacao: Number(variacao.toFixed(2)), 
+            valorAnterior: cotacaoOntem.valor, 
+            valorAtual: cotacaoHoje.valor, 
+        });
 
     }
 

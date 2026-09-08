@@ -21,7 +21,7 @@ const agendaTarefas = async () => { // Adiciona um job à fila de cotações a c
     // Adiciona um novo job repetível à fila de cotações para buscar cotações online a cada 15 minutos
     await cotacoesQueue.add('cotacoes', {},
         {
-            repeat: { cron: '*/1 * * * *' },
+            repeat: { cron: '*/15 * * * *' }, // Executa a cada 15 minutos
             attempts: 3, // Número máximo de tentativas em caso de falha
             backoff: 5000, // Tempo de espera entre tentativas em caso de falha (em milissegundos)
         }
@@ -33,7 +33,8 @@ const agendaTarefas = async () => { // Adiciona um job à fila de cotações a c
     }
     await topMovimentosQueue.add('top-movimentos',{},
         {
-            repeat: { cron: '*/1 * * * *' },//{ cron: '59 23 * * *' },
+            //Cron para testes que executa a cada um minuto -> { cron: '*/1 * * * *' }
+            repeat: { cron: '59 23 * * *' }, // Executa diariamente às 23:59
             attempts: 3,
             backoff: 5000,
         }
