@@ -1,6 +1,19 @@
 const { Schema } = require('mongoose');
 const { cpf } = require('cpf-cnpj-validator');
 
+const MoedaSchema = new Schema({ //Subdocumento de Moeda aninhado no documento de Usuário
+    quantidade: {
+        type: Number,
+        required: true,
+    },
+    codigo: {
+        type: String,
+        required: true,
+        unique: true,
+        sparse: true, //Garante que o campo seja único, mas permite que seja nulo não indexando os documentos que não possuem esse campo. Isso é útil para campos opcionais que devem ser únicos quando presentes.
+    },
+});
+
 const SaqueSchema = new Schema({ //Subdocumento de Saque aninhado no documento de Usuário
     valor: {
         type: Number,
@@ -68,6 +81,7 @@ const UsuarioSchema = new Schema({//Documento de Usuário
     },
     depositos: [DepositoSchema],
     saques: [SaqueSchema],
+    moedas: [MoedaSchema],
 
 });
 
