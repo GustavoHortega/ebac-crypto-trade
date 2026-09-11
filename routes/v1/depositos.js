@@ -18,6 +18,14 @@ router.post('/', async (req, res) => { // Rota para criar um novo depósito para
     try {
         const valor = req.body.valor;
         usuario.depositos.push({ valor, data: new Date() });
+
+        const saldoEmMoedas = await usuario.moedas.find(m => m.codigo === 'BRL');
+        if (saldoEmMoedas) {
+            saldoEmMoedas.quantidade += valor;
+        } else {
+            usuario.moedas.push({ codigo: 'BRL', quantidade: valor });
+        }
+
         await usuario.save();
 
         res.json({

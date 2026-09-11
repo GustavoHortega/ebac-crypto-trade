@@ -23,6 +23,10 @@ router.post('/', async (req, res) => { // Realiza saque do usuário logado
         }
 
         usuario.saques.push({ valor: valor, data: new Date() });
+
+        const saldoEmMoedas = usuario.moedas.find(m => m.codigo === 'BRL');
+        saldoEmMoedas.quantidade -= valor; // Atualiza o saldo em reais do usuário
+
         await usuario.save();
 
         res.json({
