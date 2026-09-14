@@ -5,43 +5,51 @@ const checaSaldo = async (usuario) => {
     const operacoes = (await Usuario.aggregate([ // Aggregation pipeline (recebe uma lista de agragadores)
         { $match: { cpf: usuario.cpf } }, // Seleciona o usuário pelo CPF
         {
-            $unwind: { // Separa todos os depósitos em um objeto para cada depósito, repetindo as demias informações de usuario
-                path: "$depositos",
-                preserveNullAndEmptyArrays: true, //Faz com que documentos com campos vazios ou nulos sejam preservados
+            $unwind: { // Desestrutura o array de moedas para que cada moeda seja um documento separado
+                path: '$moedas',
+                preserveNullAndEmptyArrays: true, // Garante que mesmo que não haja moedas, o usuário ainda seja retornado
             }
         },
         {
-            $match: {
-                "depositos.cancelado": { $ne: true } // Seleciona apenas os depósitos que não foram cancelados
+            $project: { // Seleciona os campos que serão retornados
+                'moedas.quantidade': 1,
+                'moedas.codigo': 1,
             }
         },
         {
-            $group: { // Agruppa todos os documentos separados anteriormente através do id com a soma dos depósitos
-                _id: "$_id",
-                depositos: { $sum: "$depositos.valor" },
-                saques: { $last: "$saques" }
+            $lookup: { // Faz um join com a coleção de operações para trazer os depósitos e saques
+                from: 'cotacaos', // Nome da coleção de operações
+                localField: 'moedas.codigo', // Campo local que será usado para o join
+                foreignField: 'moeda', // Campo da coleção de operações que será usado para o join
+                as: 'cotacoes' // Nome do campo que será criado com os resultados do join
             }
         },
         {
-            $unwind: { // Separa todos os saques em um objeto para cada depósito, repetindo as demias informações de usuario
-                path: "$saques",
-                preserveNullAndEmptyArrays: true, //Faz com que documentos com campos vazios ou nulos sejam preservados
+            $project: {
+                quantidade: '$moedas.quantidade',
+                codigo: '$moedas.codigo',
+                cotacao: {
+                    $first: {
+                        $sortArray: { // Ordena as cotações para pegar a mais recente
+                            input: '$cotacoes',
+                            sortBy: { data: -1 } // Ordena por data decrescente
+                        }
+                    }
+                }
             }
         },
         {
-            $group: { // Agruppa todos os documentos separados anteriormente através do id com a soma dos saques
-                _id: "$_id",
-                saques: { $sum: "$saques.valor" },
-                depositos: { $last: "$depositos" }
+            $project: {
+                totalBrl: {
+                    $multiply: [ '$quantidade',{ $ifNull: [ '$cotacao.valor', 1 ] }] // Calcula o valor total em BRL multiplicando a quantidade pela cotação
+                },
+                código: 1,
             }
-        },
-    ]))[0];
+        }
 
-    if (!operacoes) { // Garante que se não houver operações, o saldo seja 0
-        return 0;
-    }
+    ]));
 
-    return operacoes.depositos - operacoes.saques; // Faz a diferença entre depósitos e saques.
+    return operacoes.reduce((acc, operacao) => acc + operacao.totalBrl, 0); // Soma todos os valores em BRL das moedas do usuário
 }
 
 module.exports = checaSaldo;

@@ -1,6 +1,6 @@
 const { Corretora } = require('../models');
 const { CNPJ, RESERVA_MINIMA } = require('../constants');
-const { logger } = require('../utils/logger');
+const { logger } = require('../utils');
 
 const saldoWorker = async (job, done) => {
     try {
