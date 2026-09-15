@@ -6,4 +6,5 @@ module.exports = {
     buscaCotacoesOnline: require('./busca-cotacoes').buscaCotacoesOnline,
     buscaCotacoesNoBanco: require('./busca-cotacoes').buscaCotacoesNoBanco,
     geraTopMovimentos: require('./gera-top-movimentos'),
+    sacaCrypto: require('./saca-crypto'),
 };
