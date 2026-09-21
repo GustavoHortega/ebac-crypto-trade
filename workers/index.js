@@ -3,15 +3,18 @@ const Queue = require('bull');
 const cotacoesWorker = require('./cotacoes');
 const saldoWorker = require('./saldo');
 const topMovimentosWorker = require('./top-movimentos');
+const relatoriosWorker = require('./relatorios');
 
 // Cria uma fila de jobs chamada "busca-cotacoes" usando o Bull e a URL do Redis definida na variável de ambiente REDIS_URL
 const cotacoesQueue = new Queue('busca-cotacoes', process.env.REDIS_URL);
 const aumentaSaldoQueue = new Queue('saldo', process.env.REDIS_URL);
 const topMovimentosQueue = new Queue('top-movimentos', process.env.REDIS_URL);
+const relatoriosQueue = new Queue('relatorios', process.env.REDIS_URL);
 
 cotacoesQueue.process('cotacoes', cotacoesWorker); // Registra o worker para processar os jobs da fila de cotações
 aumentaSaldoQueue.process('saldo', saldoWorker); // Registra o worker para processar os jobs da fila de aumento de saldo
 topMovimentosQueue.process('top-movimentos', topMovimentosWorker); // Registra o worker para processar os jobs da fila de top movimentos
+relatoriosQueue.process('relatorios', relatoriosWorker);
 
 const agendaTarefas = async () => { // Adiciona um job à fila de cotações a cada 15 minutos usando a sintaxe de cron do Bull
 
@@ -51,6 +54,20 @@ const agendaTarefas = async () => { // Adiciona um job à fila de cotações a c
     }
 
     await aumentaSaldoQueue.add('saldo', {},
+        {
+            repeat: { cron: '0 0 * * *' }, // Executa diariamente à meia-noite
+            attempts: 3,
+            backoff: 5000,
+        }
+        
+    );
+
+    const relatoriosJobs = await relatoriosQueue.getRepeatableJobs();
+    for (const job of relatoriosJobs) {
+        await relatoriosQueue.removeRepeatableByKey(job.key);
+    }
+
+    await relatoriosQueue.add('relatorios', {},
         {
             repeat: { cron: '0 0 * * *' }, // Executa diariamente à meia-noite
             attempts: 3,
