@@ -1,10 +1,10 @@
-const { Relatorio } = require('../models');
+const { Relatorio, Usuario } = require('../models');
 
 const { logger } = require('../utils');
 const { checaSaldo } = require('../services');
 
 
-const relatorioWorker = async (_, done) => {
+const relatorioWorker = async () => {
     try {
         logger.info('buscando todos so usuários da base de dados...');
 
@@ -33,12 +33,11 @@ const relatorioWorker = async (_, done) => {
         }
 
 
-        logger.info('Usuários criados com sucesso');
-        done();
-
+        logger.info('Relatórios criados com sucesso');
+        
     } catch (e) {
         logger.error(`Errp ao processar o job ${e.message}`);
-        done(e);
+        throw e;
     }
 };
 

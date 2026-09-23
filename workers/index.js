@@ -69,7 +69,7 @@ const agendaTarefas = async () => { // Adiciona um job à fila de cotações a c
 
     await relatoriosQueue.add('relatorios', {},
         {
-            repeat: { cron: '0 0 * * *' }, // Executa diariamente à meia-noite
+            repeat: { cron: '*/1 * * * *' },//{ cron: '0 0 * * *' }, // Executa diariamente à meia-noite
             attempts: 3,
             backoff: 5000,
         }
