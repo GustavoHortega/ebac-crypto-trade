@@ -50,6 +50,8 @@ const trocaMoedas = async (usuario, cotacaoId, quantidade, operacao) => {
             })
         }
 
+        moedaEmReais.quantidade -= (reaisNecessarios + taxaCorretora * cotacaoValida.valor); 
+
     } else {
         if(!moedaEmCrypto || moedaEmCrypto.quantidade < quantidade) {
             throw new Error('Saldo insuficiente para realizar a operação de venda!');
