@@ -10,6 +10,7 @@ const depositosRouter = require('./depositos');
 const saquesRouter = require('./saques');
 const cotacoesRouter = require('./cotacoes');
 const trocasRouter = require('./trocas');
+const relatoriosRouter = require('./relatorios')
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use('/cotacoes', cotacoesRouter); // Rota de cotações
 router.use('/trocas', passport.authenticate('jwt', { session: false }), trocasRouter); // Rota de trocas            
 router.use('/depositos', passport.authenticate('jwt', { session: false }), depositosRouter); // Rota de depósitos
 router.use('/saques', passport.authenticate('jwt', { session: false }), saquesRouter); // Rota de saques
+router.use('/relatorios', passport.authenticate('jwt', { session: false}), relatoriosRouter); //Rota de relatórios
 
 module.exports = router;
