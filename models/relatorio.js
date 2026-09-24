@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-const relatorioSchema = new Schema({
+const RelatorioSchema = new Schema({
     saldo: {
         type: Number,
         required: true,
@@ -17,4 +17,4 @@ const relatorioSchema = new Schema({
     }
 });
 
-module.exports = relatorioSchema;
+module.exports = RelatorioSchema;
