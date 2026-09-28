@@ -1,8 +1,10 @@
 const express = require('express');
 const passport = require('passport');
+const swaggerUi = require('swagger-ui-express')
 
 require('./auth/jwt'); // Importa a configuração do Passport JWT
 
+const swaggerConfig = require('./docs') // Importa config do swagger
 const statusRouter = require('./status');
 const usuariosRouter = require('./usuarios');
 const authRouter = require('./auth');
@@ -24,5 +26,7 @@ router.use('/depositos', passport.authenticate('jwt', { session: false }), depos
 router.use('/saques', passport.authenticate('jwt', { session: false }), saquesRouter); // Rota de saques
 router.use('/relatorios', passport.authenticate('jwt', { session: false}), relatoriosRouter); //Rota de relatórios
 router.use('/topclientes', topClientesRouter);
+router.use('/docs', swaggerUi.serve);
+router.use('/docs', swaggerUi.setup(swaggerConfig));
 
 module.exports = router;
