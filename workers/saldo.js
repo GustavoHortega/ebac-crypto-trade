@@ -2,7 +2,7 @@ const { Corretora } = require('../models');
 const { CNPJ, RESERVA_MINIMA } = require('../constants');
 const { logger } = require('../utils');
 
-const saldoWorker = async () => {
+const saldoWorker = async (job) => {
     try {
         logger.info(`Checando aumento de saldos... Tentativa ${job.attemptsMade + 1}/${job.opts.attempts}`);
     
