@@ -15,6 +15,30 @@ const swaggerBase = {
                 scheme: 'bearer',
                 bearerFormat: 'JWT'
             }
+        },
+        schemas: {
+            'Cotação': {
+                type: 'object',
+                properties: {
+                    moeda: {
+                        type: 'string',
+                        example: 'BTC'
+                    },
+                    data: {
+                        type: 'string',
+                        format: 'date-time',
+                        example: '2026-10-09T16:00:00.398Z'
+                    },
+                    id: {
+                        type: 'string',
+                        example: '6a5666604a590d34af9ea71c'
+                    },
+                    valor: {
+                        type: 'number',
+                        example: 329830.36851116066
+                    }
+                }
+            }
         }
     }
 };

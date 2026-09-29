@@ -13,8 +13,20 @@ const router = express.Router();
  *      responses:
  *          200:
  *              description: Recebe uma lista de cotações, atente-se ao ID da cotações.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              sucesso:
+ *                                  type: boolean
+ *                                  example: true
+ *                              cotacoes:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Cotação'
  *      tags:
- *          - operacoes
+ *          - Operacoes
  */
 router.get('/', async (_req, res) => { // Rota para buscar cotações de criptomoedas
     try {
