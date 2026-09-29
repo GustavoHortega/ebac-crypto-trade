@@ -7,6 +7,15 @@ const swaggerBase = {
         title: 'API da Cryptotrade',
         description: 'Onde trocar cryptos é simples e rápido',
         version: '0.0.1',
+    },
+    components: {
+        securitySchemes: {
+            auth: {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT'
+            }
+        }
     }
 };
 
