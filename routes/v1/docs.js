@@ -60,6 +60,37 @@ const swaggerBase = {
                         example: '6a5666604a590d34af9ea71c'
                     }
                 }
+            },
+            'Saque': {
+                type: 'object',
+                properties: {
+                    valor: {
+                        type: 'number',
+                        example: 1000
+                    },
+                    data: {
+                        type: 'string',
+                        format: 'date-time',
+                        example: '2026-10-09T16:00:00.398Z'
+                    },
+                    _id: {
+                        type: 'string',
+                        example: '6a5666604a590d34af9ea71c'
+                    }
+                }
+            },
+            'Moeda': {
+                type: 'object',
+                properties: {
+                    quantidade: {
+                        type: 'number',
+                        example: 10
+                    },
+                    código: {
+                        type: 'string',
+                        example: 'BTC'
+                    }
+                }
             }
         }
     }
