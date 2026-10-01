@@ -10,6 +10,8 @@ const router = express.Router();
  *    responses:
  *      200:
  *        description: A API está funcional!
+ *    tags:
+ *      - Healthcheck
  */
 router.get('/', (_req, res) => {
   res.json({

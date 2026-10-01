@@ -1,3 +1,4 @@
+const { cpf } = require('cpf-cnpj-validator');
 const swaggerJSDoc = require('swagger-jsdoc');
 
 const swaggerBase = {
@@ -89,6 +90,45 @@ const swaggerBase = {
                     código: {
                         type: 'string',
                         example: 'BTC'
+                    }
+                }
+            },
+            'Usuário': {
+                type: 'object',
+                properties: {
+                    _id: {
+                        type: 'string',
+                        example: '6a5666604a590d34af9ea71c'
+                    },
+                    nome: {
+                        type: 'string',
+                        example: 'John Doe'
+                    },
+                    cpf: {
+                        type: 'string',
+                        example: cpf.format('12345678901')
+                    },
+                    email: {
+                        type: 'string',
+                        example: 'john.doe@example.com'
+                    },
+                    depositos: {
+                        type: 'array',
+                        items: {
+                            $ref: '#/components/schemas/Depósito'
+                        }
+                    },
+                    saques: {
+                        type: 'array',
+                        items: {
+                            $ref: '#/components/schemas/Saque'
+                        }
+                    },
+                    moedas: {
+                        type: 'array',
+                        items: {
+                            $ref: '#/components/schemas/Moeda'
+                        }
                     }
                 }
             }

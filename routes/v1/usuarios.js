@@ -37,6 +37,16 @@ router.post('/', async (req, res) => {
  *      responses:
  *          200:
  *              description: Informações do perfil do usuário
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              sucesso:
+ *                                  type: boolean
+ *                                  example: true
+ *                              usuario:
+ *                                  $ref: '#/components/schemas/Usuário' 
  *          401:
  *              description: Autorização está faltando ou inválida
  *      tags:
