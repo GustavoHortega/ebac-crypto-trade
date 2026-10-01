@@ -26,7 +26,7 @@ const router = express.Router();
  *                                  items:
  *                                      $ref: '#/components/schemas/Cotação'
  *      tags:
- *          - Operacoes
+ *          - Operações
  */
 router.get('/', async (_req, res) => { // Rota para buscar cotações de criptomoedas
     try {
