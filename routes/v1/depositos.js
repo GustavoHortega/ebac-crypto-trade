@@ -30,7 +30,7 @@ const router = express.Router();
  *          401:
  *              description: Usuário não autenticado
  *      tags: 
- *          - Usuário
+ *          - Operações
  */
 router.get('/', async (req, res) => { // Rota para listar os depósitos do usuário autenticado
     res.json({
@@ -39,6 +39,49 @@ router.get('/', async (req, res) => { // Rota para listar os depósitos do usuá
     });
 });
 
+/**
+ * @openapi
+ * /v1/depositos:
+ *  post:
+ *      description: Cria um novo depósito para o usuário autenticado
+ *      security:
+ *          - auth: []
+ *      requestBody:
+ *          description: Informações do depósito
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          valor:
+ *                              type: number
+ *                              example: 1000
+ *      responses:
+ *          200:
+ *              description: Depósito criado com sucesso
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              sucesso:
+ *                                  type: boolean
+ *                                  example: true
+ *                              depositos:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Depósito'
+ *                              saldo:
+ *                                  type: number
+ *                                  example: 1000
+ *          401:
+ *              description: Usuário não autenticado
+ *          500:
+ *              description: Erro ao criar depósito
+ *      tags:
+ *          - Operações
+ */
 router.post('/', async (req, res) => { // Rota para criar um novo depósito para o usuário autenticado
     const usuario = req.user;
 
@@ -69,6 +112,38 @@ router.post('/', async (req, res) => { // Rota para criar um novo depósito para
     }
 });
 
+/**
+ * @openapi
+ * /v1/depositos/cancelar:
+ *  post:
+ *      description: Cancela o último depósito do usuário autenticado
+ *      security:
+ *          - auth: []
+ *      responses:
+ *          200:
+ *              description: Depósito cancelado com sucesso
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              sucesso:
+ *                                  type: boolean
+ *                                  example: true
+ *                              mensagem:
+ *                                  type: string
+ *                                  example: Depósito cancelado com sucesso
+ *                              depositos:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Depósito'
+ *          401:
+ *              description: Usuário não autenticado
+ *          500:
+ *              description: Erro ao cancelar depósito
+ *      tags:
+ *          - Operações
+ */
 router.post('/cancelar', async (req, res) => { // Rota para cancelar o último depósito do usuário autenticado
     const usuario = req.user;
     try {

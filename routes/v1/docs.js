@@ -50,6 +50,14 @@ const swaggerBase = {
                         type: 'string',
                         format: 'date-time',
                         example: '2026-10-09T16:00:00.398Z'
+                    },
+                    cancelado: {
+                        type: 'boolean',
+                        example: false
+                    },
+                    _id: {
+                        type: 'string',
+                        example: '6a5666604a590d34af9ea71c'
                     }
                 }
             }
