@@ -38,6 +38,20 @@ const swaggerBase = {
                         example: 329830.36851116066
                     }
                 }
+            },
+            'Depósito': {
+                type: 'object',
+                properties: {
+                    valor: {
+                        type: 'number',
+                        example: 1000
+                    },
+                    data: {
+                        type: 'string',
+                        format: 'date-time',
+                        example: '2026-10-09T16:00:00.398Z'
+                    }
+                }
             }
         }
     }

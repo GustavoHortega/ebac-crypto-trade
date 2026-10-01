@@ -5,6 +5,33 @@ const { checaSaldo } = require('../../services');
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /v1/depositos:
+ *  get:
+ *      description: Retorna a lista de depósitos do usuário autenticado
+ *      security:
+ *          - auth: []
+ *      responses:
+ *          200:
+ *              description: Lista de depósitos do usuário
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              sucesso:
+ *                                  type: boolean
+ *                                  example: true
+ *                              depositos:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Depósito'
+ *          401:
+ *              description: Usuário não autenticado
+ *      tags: 
+ *          - Usuário
+ */
 router.get('/', async (req, res) => { // Rota para listar os depósitos do usuário autenticado
     res.json({
         sucesso: true,

@@ -25,6 +25,8 @@ const router = express.Router();
  *                                  type: array
  *                                  items:
  *                                      $ref: '#/components/schemas/Cotação'
+ *          401:
+ *              description: Usuário não autenticado
  *      tags:
  *          - Operações
  */
