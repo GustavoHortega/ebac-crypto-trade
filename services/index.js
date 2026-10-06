@@ -8,4 +8,5 @@ module.exports = {
     geraTopMovimentos: require('./gera-top-movimentos'),
     sacaCrypto: require('./saca-crypto'),
     geraPnl: require('./gera-pnl'),
+    enviaEmail: require('./envia-email'),
 };
