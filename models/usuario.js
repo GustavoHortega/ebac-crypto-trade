@@ -79,6 +79,16 @@ const UsuarioSchema = new Schema({//Documento de Usuário
         required: true,
         select: false, //Garante que em alguma listagem o campo senha não seja mostrado.
     },
+    confirmado: {
+        type: Boolean,
+        default: false,
+    },
+    tokenDeConfirmacao: {
+        type: String,
+        unique: true,
+        sparse: true, //Garante que o campo seja único, mas permite que seja nulo não indexando os documentos que não possuem esse campo. Isso é útil para campos opcionais que devem ser únicos quando presentes.
+        select: false,
+    },
     depositos: [DepositoSchema],
     saques: [SaqueSchema],
     moedas: [MoedaSchema],
