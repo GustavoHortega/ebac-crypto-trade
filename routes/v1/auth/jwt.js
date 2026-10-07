@@ -10,7 +10,12 @@ passport.use(new JwtStrategy({
 
 }, async (jwtPayload, done) => {
     try {
-        const usuario = await Usuario.findById(jwtPayload.id);
+        const usuario = await Usuario.findOne({ // adicionando a verificação de confirmação do usuário
+            _id: jwtPayload.id,
+            confirmado: true,
+            
+        });
+
         done(null, usuario);
         
     } catch (err) {

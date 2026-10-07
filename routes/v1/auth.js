@@ -43,10 +43,17 @@ router.post('/', async (req, res) => {
     } catch (e) {
         logger.error(`Erro na autenticação do usuário ${e.message}`);
 
-        res.status(401).json({
-            sucesso: false,
-            mensagem: 'E-mail ou senha inválidos',
-        });
+        if (e.message.match('confirmado')) {
+            return res.status(401).json({
+                sucesso: false,
+                mensagem: e.message,
+            });
+        } else {
+            return res.status(401).json({
+                sucesso: false,
+                mensagem: 'Email ou senha inválidos',
+            });
+        }
     }
 });
 
