@@ -1,7 +1,7 @@
 const { Usuario } = require('../models');
 
 const confirmaConta = async (token) => {
-    const usuario = await Usuario.findOneAndDelete({
+    const usuario = await Usuario.findOne({
         tokenDeConfirmacao: token,
     })
 

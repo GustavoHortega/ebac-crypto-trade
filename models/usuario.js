@@ -66,7 +66,7 @@ const UsuarioSchema = new Schema({//Documento de Usuário
         required: true,
         min: 4,
         unique: true,
-        validade: {
+        validate: {
             validator: function(v) {
                 return v.match('@')
             },
