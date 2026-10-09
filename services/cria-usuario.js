@@ -2,9 +2,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
 const { Usuario } = require('../models');
-
-//TODO
-// const {enviaEmailDeConfirmacao} = require('./envia-email');
+const {enviaEmailDeConfirmacao} = require('./envia-email');
 
 const criaUsuario = async(usuario, urlDeRedirecionamento) => {
     if (!usuario.senha) {
@@ -23,8 +21,7 @@ const criaUsuario = async(usuario, urlDeRedirecionamento) => {
 
     const {senha, ...usuarioSalvo} = (await Usuario.create(usuario))._doc; // Os três pontos fazem a desestruturação do documento no campo senha restirando esse campo e gravando na variavel senha.
 
-    //TODO
-    // await enviaEmailDeConfirmacao(usuarioSalvo, urlDeRedirecionamento);
+    await enviaEmailDeConfirmacao(usuarioSalvo, urlDeRedirecionamento);
 
     return usuarioSalvo;
 };
