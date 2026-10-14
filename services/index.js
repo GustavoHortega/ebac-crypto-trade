@@ -10,4 +10,5 @@ module.exports = {
     geraPnl: require('./gera-pnl'),
     enviaEmailDeConfirmacao: require('./envia-email').enviaEmailDeConfirmacao,
     confirmaConta: require('./confirma-conta'),
+    enviaEmailDeRecuperacao: require('./envia-email').enviaEmailDeRecuperacao,
 };
