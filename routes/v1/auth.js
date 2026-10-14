@@ -75,4 +75,24 @@ router.get('/confirma-conta', async (req, res) => {
         });
     }
 });
+
+router.get('/pede-recuperacao', async (req, res) => {
+    try {
+        const { email, redirect} = req.query;
+
+        await enviaEmailDeRecuperacao(email, redirect);
+
+        res.status(200).json({
+            sucesso: true,
+            mensagem: 'Se você tiver uma conta com esse email, um email de recuperação será enviado',
+        });
+    } catch (e) {
+        logger.error(`Erro na solicitação de recuperação de senha ${e.message}`);
+
+        res.status(422).json({
+            sucesso: false,
+            mensagem: e.message,
+        });
+    }
+});
 module.exports = router;
