@@ -89,6 +89,12 @@ const UsuarioSchema = new Schema({//Documento de Usuário
         sparse: true, //Garante que o campo seja único, mas permite que seja nulo não indexando os documentos que não possuem esse campo. Isso é útil para campos opcionais que devem ser únicos quando presentes.
         select: false,
     },
+    tokenDeRecuperacao: {
+        type: String,
+        unique: true,
+        sparse: true,
+        select: false,
+    },
     depositos: [DepositoSchema],
     saques: [SaqueSchema],
     moedas: [MoedaSchema],
