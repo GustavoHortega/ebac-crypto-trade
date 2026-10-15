@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 
 const { logger } = require('../../utils');
 const { criaUsuario } = require('../../services');
@@ -7,7 +8,7 @@ const { checaSaldo } = require('../../services');
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate('jwt', {session: false}) , async (req, res) => { // Rota para criar um novo usuário
     const dados = req.body.usuario;
     const urlDeRedirecionamento = req.body.redirect;
 
@@ -28,6 +29,27 @@ router.post('/', async (req, res) => {
     }
     catch (e) {
         logger.error(`Erro na criação do usuário ${e.message}`);
+        res.status(422).json({
+            sucesso: false,
+            erro: e.message,
+        });
+    }
+});
+
+router.put('/senha', async (req, res) => { // Rota para alterar a senha do usuário
+    const { senha } = req.body;
+
+    try {
+        const usuario = req.user;
+        usuario.senha = await bcrypt.hash(senha, 10);
+        await usuario.save();
+
+        res.json({
+            sucesso: true,
+            mensagem: 'Senha alterada com sucesso',
+        });
+
+    } catch (e) {
         res.status(422).json({
             sucesso: false,
             erro: e.message,
@@ -61,7 +83,7 @@ router.post('/', async (req, res) => {
  *          - Usuário
  */
 
-router.get('/me', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get('/me', passport.authenticate('jwt', { session: false }), async (req, res) => { // Rota para obter informações do perfil do usuário
     res.json({
         sucesso: true,
         usuario: req.user,
