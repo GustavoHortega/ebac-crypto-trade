@@ -11,4 +11,5 @@ module.exports = {
     enviaEmailDeConfirmacao: require('./envia-email').enviaEmailDeConfirmacao,
     confirmaConta: require('./confirma-conta'),
     enviaEmailDeRecuperacao: require('./envia-email').enviaEmailDeRecuperacao,
+    validaTokenAlteracaoDeSenha: require('./valida-token-senha'),
 };
