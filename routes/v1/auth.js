@@ -1,7 +1,7 @@
 const express = require('express');
 const { logger } = require('../../utils');
 
-const { logaUsuario, confirmaConta } = require('../../services');
+const { logaUsuario, confirmaConta, validaTokenAlteracaoDeSenha } = require('../../services');
 
 const router = express.Router();
 
@@ -88,6 +88,23 @@ router.get('/pede-recuperacao', async (req, res) => {
         });
     } catch (e) {
         logger.error(`Erro na solicitação de recuperação de senha ${e.message}`);
+
+        res.status(422).json({
+            sucesso: false,
+            mensagem: e.message,
+        });
+    }
+});
+
+router.get('/valida-token', async (req, res) => {
+    try {
+        const { token, redirect } = req.query;
+
+        const jwt = await validaTokenAlteracaoDeSenha(token);
+
+        res.redirect(`${redirect}?jwt=${jwt}`); // redireciona para a página de alteração de senha com o JWT como query param
+    } catch (e) {
+        logger.error(`Erro na validação do token de recuperação de senha: ${e.message}`);
 
         res.status(422).json({
             sucesso: false,
