@@ -8,7 +8,7 @@ const { checaSaldo } = require('../../services');
 
 const router = express.Router();
 
-router.post('/', passport.authenticate('jwt', {session: false}) , async (req, res) => { // Rota para criar um novo usuário
+router.post('/', async (req, res) => { // Rota para criar um novo usuário
     const dados = req.body.usuario;
     const urlDeRedirecionamento = req.body.redirect;
 
@@ -36,7 +36,7 @@ router.post('/', passport.authenticate('jwt', {session: false}) , async (req, re
     }
 });
 
-router.put('/senha', async (req, res) => { // Rota para alterar a senha do usuário
+router.put('/senha', passport.authenticate('jwt', { session: false }), async (req, res) => { // Rota para alterar a senha do usuário
     const { senha } = req.body;
 
     try {

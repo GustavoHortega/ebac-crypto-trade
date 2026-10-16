@@ -7,7 +7,7 @@ const logaUsuario = async(email, senha) => {
         throw new Error('E-mail e senha são obrigatórios');
     }
 
-    const usuario = await Usuario.findOne({ email: email }).select('senha', 'confirmado');
+    const usuario = await Usuario.findOne({ email: email }).select('senha confirmado');
 
     if (!usuario) {
         throw new Error('Usuário não encontrado');
