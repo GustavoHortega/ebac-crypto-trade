@@ -1,4 +1,4 @@
-const { Cotacao, Corretora, Usuario } = require("../models");
+const { Cotacao, Corretora, Usuario, Operacao } = require("../models");
 const { CNPJ, TAXA_DE_TROCA } = require("../constants");
 
 const buscaCotacao = async (cotacaoId) => {
@@ -63,6 +63,15 @@ const trocaMoedas = async (usuario, cotacaoId, quantidade, operacao) => {
         moedaEmCrypto.quantidade -= quantidade; // Atualiza o saldo da moeda do usuário
         corretora.caixa -= reaisNecessarios;
     }
+
+    await Operacao.create({ // Cria registro de operação
+        usuario_id: usuario._id,
+        tipo: operacao,
+        cotacao_id: cotacaoId,
+        quantidade: quantidade,
+        valorBRL: reaisNecessarios,
+        taxa: taxaCorretora
+    });
 
     await usuario.save();
     corretora.caixa += taxaCorretora;

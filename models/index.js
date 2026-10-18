@@ -6,6 +6,7 @@ const CorretoraSchema = require('./corretora');
 const RelatorioSchema = require('./relatorio');
 const TopMovimentoSchema = require('./top-movimento');
 const TopClienteSchema = require('./top-cliente');
+const OperacaoSchema = require('./operacao');
 
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
 const Cotacao = mongoose.model('Cotacao', CotacaoSchema);
@@ -13,6 +14,7 @@ const Corretora = mongoose.model('Corretora', CorretoraSchema);
 const Relatorio = mongoose.model('Relatorio', RelatorioSchema);
 const TopMovimento = mongoose.model('TopMovimento', TopMovimentoSchema);
 const TopCliente = mongoose.model('TopCliente', TopClienteSchema);
+const Operacao = mongoose.model('Operacao', OperacaoSchema);
 
 
 const connect = async () => {
@@ -26,5 +28,6 @@ module.exports = {
   Corretora,
   Relatorio,
   TopMovimento,
-  TopCliente
+  TopCliente,
+  Operacao
 }
