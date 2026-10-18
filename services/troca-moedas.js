@@ -24,45 +24,48 @@ const trocaMoedas = async (usuario, cotacaoId, quantidade, operacao) => {
     // Checha se a cotação existe
     const cotacaoValida = await buscaCotacao(cotacaoId);
 
-    // Checa se a corretora tem saldo suficiente para realizar a operação
+    // Calcula valor necessário em reais e resgata corretora do banco
     const reaisNecessarios = (cotacaoValida.valor * quantidade);
     const corretora = await Corretora.findOne({ cnpj: CNPJ });
-    if (corretora.caixa < reaisNecessarios) {
-        throw new Error('Valor muito alto para a corretora! Não há caixa suficiente para realizar a operação.');
-    }
 
     // Checa se o usuário tem saldo suficiente para realizar a operação
     const moedaEmReais = usuario.moedas.find(m => m.codigo === 'BRL');
     const moedaEmCrypto = usuario.moedas.find(m => m.codigo === cotacaoValida.moeda);
-    const taxaCorretora = TAXA_DE_TROCA * quantidade;
+    const taxaCorretora = reaisNecessarios * TAXA_DE_TROCA;
 
-    if(operacao === 'compra') {
-        if (!moedaEmReais || moedaEmReais.quantidade < reaisNecessarios) {
+    if (operacao === 'compra') {
+        if (!moedaEmReais || moedaEmReais.quantidade < reaisNecessarios + taxaCorretora) {
             throw new Error('Saldo insuficiente para realizar a operação de compra!');
         }
 
         if (moedaEmCrypto) {
-            moedaEmCrypto.quantidade += (quantidade - taxaCorretora);
+            moedaEmCrypto.quantidade += quantidade
         } else {
             usuario.moedas.push({
                 codigo: cotacaoValida.moeda,
-                quantidade: (quantidade - taxaCorretora)
+                quantidade: quantidade
             })
         }
 
-        moedaEmReais.quantidade -= (reaisNecessarios + taxaCorretora * cotacaoValida.valor); 
+        moedaEmReais.quantidade -= (reaisNecessarios + taxaCorretora);
+        corretora.caixa += reaisNecessarios;
 
     } else {
-        if(!moedaEmCrypto || moedaEmCrypto.quantidade < quantidade) {
+        if (corretora.caixa < reaisNecessarios) { // Verifica se a corretora tem saldo para pagar o usuário na op de venda
+            throw new Error('Valor muito alto para a corretora! Não há caixa suficiente para realizar a operação.');
+        }
+
+        if (!moedaEmCrypto || moedaEmCrypto.quantidade < quantidade) {
             throw new Error('Saldo insuficiente para realizar a operação de venda!');
         }
 
-        moedaEmReais.quantidade += (reaisNecessarios - taxaCorretora * cotacaoValida.valor); // Atualiza o saldo em reais do usuário
+        moedaEmReais.quantidade += (reaisNecessarios - taxaCorretora); // Atualiza o saldo em reais do usuário
         moedaEmCrypto.quantidade -= quantidade; // Atualiza o saldo da moeda do usuário
+        corretora.caixa -= reaisNecessarios;
     }
 
     await usuario.save();
-    corretora.caixa += taxaCorretora * cotacaoValida.valor;
+    corretora.caixa += taxaCorretora;
     await corretora.save();
 
     return usuario.moedas;
