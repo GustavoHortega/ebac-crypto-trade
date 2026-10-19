@@ -9,7 +9,9 @@ module.exports = {
     sacaCrypto: require('./saca-crypto'),
     geraPnl: require('./gera-pnl'),
     enviaEmailDeConfirmacao: require('./envia-email').enviaEmailDeConfirmacao,
-    confirmaConta: require('./confirma-conta'),
     enviaEmailDeRecuperacao: require('./envia-email').enviaEmailDeRecuperacao,
+    enviaEmailDeParabens: require('./envia-email').enviaEmailDeParabens,
+    confirmaConta: require('./confirma-conta'),
     validaTokenAlteracaoDeSenha: require('./valida-token-senha'),
+    analisaLucro: require('./analisa-lucro'),
 };
