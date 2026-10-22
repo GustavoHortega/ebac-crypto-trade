@@ -1,3 +1,5 @@
+const { validaOtp } = require('./otp');
+
 module.exports = {
     criaUsuario: require('./cria-usuario'),
     logaUsuario: require('./loga-usuario'),
@@ -14,4 +16,6 @@ module.exports = {
     confirmaConta: require('./confirma-conta'),
     validaTokenAlteracaoDeSenha: require('./valida-token-senha'),
     analisaLucro: require('./analisa-lucro'),
+    geraSegredo: require('./otp').geraSegredo,
+    validaOtp: require('./otp').validaOtp,
 };
