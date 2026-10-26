@@ -3,8 +3,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 
 const { logger } = require('../../utils');
-const { criaUsuario } = require('../../services');
-const { checaSaldo } = require('../../services');
+const { criaUsuario, geraSegredo, checaSaldo } = require('../../services');
 
 const router = express.Router();
 
@@ -51,6 +50,26 @@ router.put('/senha', passport.authenticate('jwt', { session: false }), async (re
 
     } catch (e) {
         res.status(422).json({
+            sucesso: false,
+            erro: e.message,
+        });
+    }
+});
+
+router.post('/otp', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const usuario = req.user;
+
+    try {
+        const { segredo, qrcode } = geraSegredo(usuario.email);
+
+        usuario.segredoOtp = segredo;
+        await usuario.save();
+
+        return res.send(qrcode); //Não é um json, é um svg.
+    } catch (e) {
+        logger.error(`Erro na geração do TOTP: ${e.message}`);
+
+        return res.status(500).json({
             sucesso: false,
             erro: e.message,
         });
