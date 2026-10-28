@@ -2,6 +2,7 @@ const express = require('express');
 
 const { logger } = require('../../utils');
 const { checaSaldo, sacaCrypto } = require('../../services');
+const { checaOtp } = require('./auth/otp');
 
 const router = express.Router();
 
@@ -81,7 +82,7 @@ router.get('/', (req, res) => { // Retorna todos os saques do usuário logado
  *      tags:
  *          - Operações
  */
-router.post('/', async (req, res) => { // Realiza saque do usuário logado para fora da cryptotrade (em reais)
+router.post('/', checaOtp, async (req, res) => { // Realiza saque do usuário logado para fora da cryptotrade (em reais)
     const usuario = req.user;
     try {
         const valor = req.body.valor;
