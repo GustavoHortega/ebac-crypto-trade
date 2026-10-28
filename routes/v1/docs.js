@@ -15,6 +15,11 @@ const swaggerBase = {
                 type: 'http',
                 scheme: 'bearer',
                 bearerFormat: 'JWT'
+            },
+            otp: {
+                type: 'apiKey',
+                in: 'header',
+                name: 'totp'
             }
         },
         schemas: {

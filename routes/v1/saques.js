@@ -47,6 +47,7 @@ router.get('/', (req, res) => { // Retorna todos os saques do usuário logado
  *      description: Realiza saque do usuário logado para fora da cryptotrade (em reais)
  *      security:
  *          - auth: []
+ *            otp: []
  *      requestBody:
  *          description: Valor do saque em reais
  *          required: true
@@ -78,7 +79,7 @@ router.get('/', (req, res) => { // Retorna todos os saques do usuário logado
  *          422:
  *              description: Valor do saque inválido ou saldo insuficiente
  *          401:
- *              description: Usuário não autenticado
+ *              description: Login não realizado ou OTP inválido
  *      tags:
  *          - Operações
  */
