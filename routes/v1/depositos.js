@@ -78,7 +78,7 @@ router.get('/', async (req, res) => { // Rota para listar os depósitos do usuá
  *                                  type: number
  *                                  example: 1000
  *          401:
- *              description: Usuário não autenticado
+ *              description: Usuário não autenticado ou OTP inválido
  *          500:
  *              description: Erro ao criar depósito
  *      tags:
