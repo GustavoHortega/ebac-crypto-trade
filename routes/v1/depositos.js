@@ -2,6 +2,7 @@ const express = require('express');
 
 const { logger } = require('../../utils');
 const { checaSaldo } = require('../../services');
+const { checaOtp } = require('./auth/otp');
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ const router = express.Router();
  *                                  items:
  *                                      $ref: '#/components/schemas/Depósito'
  *          401:
- *              description: Usuário não autenticado
+ *              description: Login não realizado ou OTP inválido
  *      tags: 
  *          - Operações
  */
@@ -46,6 +47,7 @@ router.get('/', async (req, res) => { // Rota para listar os depósitos do usuá
  *      description: Cria um novo depósito para o usuário autenticado
  *      security:
  *          - auth: []
+ *            otp: []
  *      requestBody:
  *          description: Informações do depósito
  *          required: true
@@ -82,7 +84,7 @@ router.get('/', async (req, res) => { // Rota para listar os depósitos do usuá
  *      tags:
  *          - Operações
  */
-router.post('/', async (req, res) => { // Rota para criar um novo depósito para o usuário autenticado
+router.post('/', checaOtp, async (req, res) => { // Rota para criar um novo depósito para o usuário autenticado
     const usuario = req.user;
 
     try {

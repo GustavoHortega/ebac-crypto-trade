@@ -8,7 +8,6 @@ const checaOtp = async (req, res, next) => {
         const usuario = await Usuario.findById(usuarioId).select('segredoOtp');
         const segredoOtp = usuario.segredoOtp;
         const token = req.get('totp') //Pega o totp dos headers da req
-        console.log(token);
 
         if (!token || !/^\d{6}$/.test(token)) {// Valida com regex se o valor totp no header está correta
             return res.status(401).json({
