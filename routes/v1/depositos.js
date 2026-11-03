@@ -29,7 +29,7 @@ const router = express.Router();
  *                                  items:
  *                                      $ref: '#/components/schemas/Depósito'
  *          401:
- *              description: Login não realizado ou OTP inválido
+ *              description: Login não realizado
  *      tags: 
  *          - Operações
  */
