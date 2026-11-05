@@ -2,8 +2,6 @@ const express = require('express');
 
 const router = express.Router();
 
-const { enviaEmail } = require('../../services');
-
 /**
  * @openapi
  * /v1/status:
