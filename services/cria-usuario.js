@@ -13,6 +13,10 @@ const criaUsuario = async(usuario, urlDeRedirecionamento) => {
         throw new Error('O campo senha deve ter no mínimo 5 caracteres');
     }
 
+    if (!urlDeRedirecionamento) {
+        throw new Error('A URL de redirecionamento é obrigatória');
+    }
+
     const hashSenha = await bcrypt.hash(usuario.senha, 10); //Faz a hash da senha
 
     usuario.senha = hashSenha; //Sobrescreve a senha
