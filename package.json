@@ -8,7 +8,7 @@
     "dev": "nodemon ./server.js",
     "seed": "node ./seed",
     "test:unit": "jest --runInBand",
-    "test:int": "jest --runInBand -c jest.integracao.config.js"
+    "test:int": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand -c jest.integracao.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -34,6 +34,7 @@
     "winston": "^3.8.1"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "jest": "^30.5.2",
     "maildev": "^3.0.0",
     "mongodb-memory-server": "^11.3.0",
