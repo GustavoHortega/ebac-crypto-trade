@@ -2,14 +2,14 @@ const request = require('supertest');
 
 const app = require('../../../app');
 const {
-    checaAutentiacao,
+    checaAutenticacao,
     geraJwt
 } = require('./shared/autenticacao');
 const { Usuario, Relatorio } = require('../../../models');
 const faker = require('faker-br');
 
 describe('/v1/relatorios/pnl', () => {
-    checaAutentiacao('/v1/relatorios/pnl');
+    checaAutenticacao('/v1/relatorios/pnl');
 
     describe('Se o usuario existe', () => {
         let usuario, jwt;
