@@ -14,6 +14,7 @@ const cotacoesRouter = require('./cotacoes');
 const trocasRouter = require('./trocas');
 const relatoriosRouter = require('./relatorios');
 const topClientesRouter = require('./top-clientes');
+const saldoRouter = require('./saldo');
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use('/relatorios', passport.authenticate('jwt', { session: false}), relat
 router.use('/topclientes', topClientesRouter);
 router.use('/docs', swaggerUi.serve);
 router.use('/docs', swaggerUi.setup(swaggerConfig));
+router.use('/saldo', passport.authenticate('jwt', { session: false}), saldoRouter);
 
 module.exports = router;

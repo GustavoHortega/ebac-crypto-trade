@@ -9,7 +9,7 @@ const { Usuario, Relatorio } = require('../../../models');
 const faker = require('faker-br');
 
 describe('/v1/relatorios/pnl', () => {
-    checaAutenticacao('/v1/relatorios/pnl');
+    checaAutenticacao('/v1/relatorios/pnl', 'get');
 
     describe('Se o usuario existe', () => {
         let usuario, jwt;
