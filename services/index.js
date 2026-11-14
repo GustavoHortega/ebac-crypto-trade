@@ -16,4 +16,5 @@ module.exports = {
     analisaLucro: require('./analisa-lucro'),
     geraSegredo: require('./otp').geraSegredo,
     validaOtp: require('./otp').validaOtp,
+    buscaTopClientes: require('./busca-top-clientes'),
 };
