@@ -12,7 +12,7 @@ const checaOtp = async (req, res, next) => {
         if (!token || !/^\d{6}$/.test(token)) {// Valida com regex se o valor totp no header está correta
             return res.status(401).json({
                 sucesso: false,
-                erro: 'Informe um código de 6 dígitos.'
+                erro: 'Informe um código totp válido de 6 dígitos.'
             });
         }
 
