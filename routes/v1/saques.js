@@ -83,20 +83,29 @@ router.get('/', (req, res) => { // Retorna todos os saques do usuário logado
  *      tags:
  *          - Operações
  */
-router.post('/', checaOtp, async (req, res) => { // Realiza saque do usuário logado para fora da cryptotrade (em reais)
+router.post('/', checaOtp, async (req, res) => {
     const usuario = req.user;
     try {
         const valor = req.body.valor;
+
+        if (valor === undefined || valor === null || valor === '') {
+            throw new Error('Informe um valor para o saque.');
+        }
+
+        if (typeof valor !== 'number' || !Number.isFinite(valor) || valor <= 0) {
+            throw new Error('Informe um valor válido para o saque.');
+        }
+
         const saldo = await checaSaldo(usuario);
 
-        if (saldo < valor) { // Valida se o Usuário logado possui saldo
+        if (saldo < valor) {
             throw new Error('Você não possui saldo para efetuar esse saque.');
         }
 
         usuario.saques.push({ valor: valor, data: new Date() });
 
         const saldoEmMoedas = usuario.moedas.find(m => m.codigo === 'BRL');
-        saldoEmMoedas.quantidade -= valor; // Atualiza o saldo em reais do usuário
+        saldoEmMoedas.quantidade -= valor;
 
         await usuario.save();
 

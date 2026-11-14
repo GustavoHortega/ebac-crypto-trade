@@ -1,10 +1,14 @@
 const { Usuario } = require("../models");
 
 const sacaCrypto = async (usuario, codigo, valor) => {
+    if (typeof valor !== 'number' || !Number.isFinite(valor) || valor <= 0) {
+        throw new Error('Informe um valor válido para o saque.');
+    }
+
     const chamadaDeAtualizacao = await Usuario.updateOne(
-        { // Atualiza o usuário
-            id: usuario._id,
-            moedas: {  // Verifica se o usuário possui a moeda e a quantidade suficiente para o saque
+        {
+            _id: usuario._id,
+            moedas: {
                 $elemMatch: {
                     codigo: codigo,
                     quantidade: {
@@ -15,16 +19,16 @@ const sacaCrypto = async (usuario, codigo, valor) => {
         },
         {
             $inc: {
-                'moedas.$.quantidade': -valor, // Atualiza a quantidade da moeda do usuário
+                'moedas.$.quantidade': -valor,
             }
         }
     );
 
-    if (chamadaDeAtualizacao.matchedCount === 0) { // Se não encontrou o usuário ou a moeda, lança um erro
+    if (chamadaDeAtualizacao.matchedCount === 0) {
         throw new Error(`Você não possui saldo suficiente em ${codigo} para efetuar esse saque.`);
     }
 
-    return (await Usuario.findOne({ _id: usuario._id })).moedas; // Retorna as moedas atualizadas do usuário
+    return (await Usuario.findOne({ _id: usuario._id })).moedas;
 };
 
 module.exports = sacaCrypto;
